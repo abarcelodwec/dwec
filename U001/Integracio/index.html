@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC 001</title>
+</head>
+
+<!-- <script>
+    function mensaje(){
+
+        alert("Oleeee");
+
+    }
+
+
+</script> -->
+<!-- <script src="js/funciones.js"></script> -->
+
+<body>
+<!-- <h1>Modificando código</h1>
+<p id="prueba">Modificando el contenido</p>
+
+<button type="button"
+    onclick="document.getElementById('prueba').innerHTML = 'CAMBIANDO EL CONTENIDO!'">
+change Text</button>
+</h1>   -->
+
+<h1>imagenes cambiadas</h1>
+
+
+
+<img id="imagen" src="img/Volante1.jpg" onclick="cambiarimagen();" width="100" height="100">
+<p>Haz clic sobre la imagen para cambiarlas</p>
+
+<script>
+    function cambiarimagen(){
+        let imagen = document.getElementById('imagen');
+
+        if(imagen.src.match('1')){
+
+            imagen.src = "img/Volante2.jpg"
+
+        }
+        else{
+
+            imagen.src = "img/Volante1.jpg"
+
+        }
+
+    }
+
+
+</script>
+
+</body>
+</html>
+
+

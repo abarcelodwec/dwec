@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Cine</title>
+</head>
+<body>
+
+    <div class="contenidor-pelicula">
+        <label>Trïi una pel·licula</label>
+        <select id="pelicula">
+            <option value="10">Interestelar (10€)</option>
+            <option value="12">Seven (12€)</option>
+            <option value="8">Los renglones torcidos de Dios (8€)</option>
+            <option value="9">El día de la bestia (9€)</option>
+        </select>
+    </div>
+    <ul class="llegenda">
+        <li>
+            <div class="seient"></div>
+            <small>N/A</small>
+        </li>
+        <li>
+            <div class="seient seleccionat"></div>
+            <small>Seleccionat</small>
+        </li>
+        <li>
+            <div class="seient ocupat"></div>
+            <small>Ocupat</small>
+        </li>
+    </ul>
+    <div class="contenidor">
+        <div class="pantalla">
+            <!-- <iframe width="200px%" height="70px" src="https://www.youtube.com/embed/UoSSbmD9vqc" title="Interstellar - Tráiler final en español HD" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe> -->
+        </div>
+        <div class="fila">
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient ocupat"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+        </div>
+        <div class="fila">
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient ocupat"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient ocupat"></div>
+            <div class="seient"></div>
+        </div>
+        <div class="fila">
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient ocupat"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient ocupat"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+        </div>
+        <div class="fila">
+            <div class="seient ocupat"></div>
+            <div class="seient ocupat"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+        </div>
+        <div class="fila">
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient ocupat"></div>
+        </div>
+        <div class="fila">
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient"></div>
+            <div class="seient ocupat"></div>
+            <div class="seient ocupat"></div>
+        </div>
+    </div>
+
+    <p class="text">Ha seleccionat <span id="contador">0</span> seients per un preu de <span id="total">0</span>€</p>
+
+    <script src="script.js"></script>
+</body>
+</html>
