@@ -12,7 +12,7 @@ let eleccionMaquina = "";
 // Contiene el nombre del usuario al iniciar el juego
 let nombre = "";
 
-// Array con las combinaciones ganadoras del jugador concadenadas.
+// Array con las combinaciones concadenadas que son las ganadoras para el jugador.
 arrWin=['tijeraspapel', 'papelpiedra', 'piedralagarto', 'lagartospock', 'spocktijeras', 'tijeraslagarto', 'lagartopapel', 'papelspock', 'spockpiedra', 'piedratijeras'];
 
 // Acumula rondas ganadas
@@ -24,8 +24,8 @@ let bJuego = document.getElementById("bJuego");
 let finJuego = document.getElementById("finJuego");
 let resultado = document.getElementById("resultado");
 let marcadorJugador = document.getElementById("marcadorJugador");
-let marcadorMaquina = document.getElementById("marcadorMaquina")
-let tituloMarcador = document.getElementById("tituloMarcador")
+let marcadorMaquina = document.getElementById("marcadorMaquina");
+let tituloMarcador = document.getElementById("tituloMarcador");
 
 
 

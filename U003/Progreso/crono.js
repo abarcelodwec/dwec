@@ -16,7 +16,7 @@ let tiempo;
 let horas;
 let minutos;
 let segundos;
-let milisegundos;
+// let milisegundos;
 
 
 // Botones
@@ -25,10 +25,7 @@ const reset = document.getElementById("resetCronometro");
 const parar = document.getElementById("pararCronometro");
 
 
-//Capturar Clases
 
-let cuadroProgreso = document.querySelector(".cuadroProgreso:not(.pintao)");
-console.log(cuadroProgreso);
 
 
 // Empieza reseteando tiempo y display.
@@ -44,7 +41,7 @@ function elCronometro(){
     horas = tiempo.getHours();
     minutos = tiempo.getMinutes();
     segundos = tiempo.getSeconds();
-    milisegundos = tiempo.getMilliseconds();
+    // milisegundos = tiempo.getMilliseconds();
 
     
     // Disminuimos en un segundo 'tiempo' si es juego o no.
@@ -53,12 +50,13 @@ function elCronometro(){
     tiempo.setSeconds(segundos - 1) ;
     
     formatoCronometro();
+
     cronometro = (minutos + ':' + segundos);
     
     display.innerHTML = cronometro;
 
-
-    document.querySelector(".cuadroProgreso:not(.pintao)").classList.add('pintao');
+    let cuadroProgreso = document.querySelector(".cuadroProgreso:not(.pintao)");
+    cuadroProgreso.classList.add('pintao');
 
     console.log(cuadroProgreso);
 
@@ -115,7 +113,15 @@ function resetCronometro(){
     iniciar.disabled = false;
     iniciar.textContent = 'Inicio';
 
-    // document.querySelectorAll(".cuadroProgreso .pintao").classList.remove('pintao');
+    console.log(document.querySelectorAll(".cuadroProgreso.pintao"));
+
+    // let losPintaos = document.querySelectorAll(".cuadroProgreso.pintao");
+
+    // losPintaos.forEach(pintaos => {
+
+    //     losPintaos.classList.remove('pintao');
+
+    // });
 }
 
 
@@ -127,7 +133,7 @@ function formatoCronometro(){
     if(horas<10){horas = '0' + horas;}            
     if(minutos<10){minutos = '0' + minutos;}
     if(segundos<10){segundos = '0' + segundos;}
-    if(milisegundos<100){milisegundos = '0' + milisegundos;}
+    // if(milisegundos<100){milisegundos = '0' + milisegundos;}
 
 }
 

@@ -11,15 +11,16 @@ function creaLocalStorage(){
 
 function mostrarLocalStorage(){
 
-    let LocalStorageUsuario = localStorage.getItem('color');
+    let LocalStorageUsuario = localStorage.getItem('nuemro');
 
-    for (let i = 0; i < localStorage.length; i++) {
-        const element = localStorage.getItem(localStorage.key(i));
+    // for (let i = 0; i < localStorage.length; i++) {
+    //     const element = localStorage.getItem(localStorage.key(i));
         
-        display.innerHTML += element;
-    }
-
-
+    //     display.innerHTML += element;
+    // }
+    
+    
+        display.innerHTML = LocalStorageUsuario;
 }
 
 function eliminarLocalStorage(){
