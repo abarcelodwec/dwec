@@ -115,13 +115,15 @@ function resetCronometro(){
 
     console.log(document.querySelectorAll(".cuadroProgreso.pintao"));
 
-    // let losPintaos = document.querySelectorAll(".cuadroProgreso.pintao");
 
-    // losPintaos.forEach(pintaos => {
 
-    //     losPintaos.classList.remove('pintao');
+    let losPintaos = document.querySelectorAll(".cuadroProgreso.pintao");
 
-    // });
+    losPintaos.forEach((e) => {
+        e.classList.remove('pintao');
+      });
+
+    
 }
 
 

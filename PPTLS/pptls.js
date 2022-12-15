@@ -151,6 +151,8 @@ let tituloMarcador = document.getElementById("tituloMarcador");
 
             }
     }
+
+    
     
 // EVENTOS/LISTENERS
 bJuego.addEventListener('click', juego, false);

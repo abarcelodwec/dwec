@@ -26,15 +26,18 @@ let cronometroLetra;
 let cronoOn;
 let cronoOnLetra;
 
-// guarda el Tiem() para pasarle el clearTiemout()
-let finTiempo;
+
 
 // Elementos
-let displayLetra = document.getElementById("displayLetra");
-let displayGeneral = document.getElementById("displayGeneral");
-let palabraOculta = document.getElementById("palabraOculta");
-let input = document.getElementById("input");
-let dibujoAhorcado = document.getElementById("dibujo");
+// let displayLetra = document.getElementById("displayLetra"); //Crono para letra
+const displayGeneral = document.getElementById("displayGeneral"); //Crono tiempo general
+const palabraOculta = document.getElementById("palabraOculta"); 
+const input = document.getElementById("input");
+const dibujoAhorcado = document.getElementById("dibujo");
+const recordTitulo = document.getElementById("recordTitulo");
+const recordText = document.getElementById("recordText");
+const panelJuego = document.getElementById("panelJuego");
+const letraFalladaDisplay = document.getElementById("letraFalladaDisplay");
 
 // Guarda el objeto 'Date()'
 let tiempo;
@@ -54,9 +57,8 @@ let bResolver = document.getElementById("resolver");
 document.getElementById("jugar").addEventListener("click", jugar, false);
 bLetra.addEventListener("click", intentoLetra, false);
 bResolver.addEventListener("click", resolver, false);
-input.addEventListener("keydown",
+input.addEventListener("keydown", (e) => {
 
-function(e) {
     if(e.key === 'Enter'){
         intentoLetra()
     }
@@ -76,22 +78,33 @@ dibujoAhorcado.src = "img/LogoRamis.jpg";
 // Función que prepara un nuevo juego y queda a la espera del usuario para que intervenga
 function jugar(){
 
-    // Iniciamos el tiempo de la letra
+    // Mostramos el panel de juego
+    panelJuego.hidden = false;
+
+    // Habilitamos input por si lo hemos deshabilitado al acabar una partida anterior
+    input.disabled = false;
+
+
+    // Iniciamos el tiempo de la letra y general
     iniciarCronometro();
     iniciarCronometroLetra();
+
     
     
     // Reseteamos intentos, letras falladas y array de la palabra oculta de posibles partidas anteriores.
     intentos = 7;
     letraFallada = "Falladas: ";
     arrPalabraOculta = [];
-    letraFallada.innerHTML = "";
+    letraFalladaDisplay.innerHTML = "";
+    input.value = "";
+    input.focus();
+    recordTitulo.innerHTML="";
 
     // Muestra el dibujo inicial ahora con todos los intentos
     dibujo();
 
     // Elige una palabra del array arrPalabrasClave al azar
-    palabraClave = 'Vale';//arrPalabrasClave[Math.floor(Math.random() * 10)];
+    palabraClave = arrPalabrasClave[Math.floor(Math.random() * 10)];
     
     // Convierte en mayúsculas para poder comparar posteriormente de forma certera,
     // omitiendo posibles errores del usuario al insertar letras o resolver.
@@ -135,7 +148,7 @@ function intentoLetra (){
     
     // Validamos que la letra es realmente una letra y no un número, símbolo o espacios.
     letra = validarLetra(letra);
-    
+
 
     // Bucle que recorre la palabra clave dígito a dígito y lo compara con la letra e introduce en el array de la palabra oculta los aciertos
     for (let i = 0; i < arrPalabraClave.length; i++){
@@ -164,7 +177,7 @@ function intentoLetra (){
     if (!acierto) {
         intentos--;
         letraFallada += letra + " ";
-        document.getElementById("letraFallada").innerHTML = letraFallada;
+        letraFalladaDisplay.innerHTML = letraFallada;
         input.value="";
         dibujo();
     } 
@@ -177,6 +190,7 @@ function intentoLetra (){
     // 4) Quedan intentos. Muestra la palabra oculta 
         palabraOculta.innerHTML = arrPalabraOculta.join("");
         dibujo();
+        input.value="";
         input.select();
         iniciarCronometroLetra();    
     }
@@ -204,7 +218,7 @@ function verificarArrPalabraOculta(){
 function resolver(){
     
     // Pide la palabra a resolver al usuario
-    let palabra = input.value;
+    let palabra = prompt("-INTRODUCE LA PALABRA A RESOLVER- \n Ten en cuenta que sólo tienes un intento").trim();
 
     // Pasamos a mayúsculas para comparar con la palabra clave
     palabra = palabra.toUpperCase(); //Mayúsculas
@@ -252,7 +266,7 @@ function validarLetra(texto){
     while(!esLetra){
 
         if(texto.length > 1){
-            texto = prompt("Has introducido más de un carácter. Vuelve a probar.Si quieres resolver, cancela y pulsa el botón resolver").trim() ;
+            texto = alert("Has introducido más de un carácter. Vuelve a probar.Si quieres resolver, cancela y pulsa el botón resolver").trim() ;
             texto = texto.toUpperCase();
             continue;
         }else if(texto == null || (texto == '') || ((texto.charCodeAt(0) < 65) || ((texto.charCodeAt(0) > 90) && (texto.charCodeAt(0) != 209)))){
@@ -307,6 +321,7 @@ function finTiempoLetra(){
     
     intentos--;
     dibujo();
+    resetCronometroLetra();
     iniciarCronometroLetra();
     
     if (intentos == 0){
@@ -314,7 +329,6 @@ function finTiempoLetra(){
     }
     
 
-    // Iniciamos el tiempo de la letra
 
 
 }
@@ -330,7 +344,8 @@ function partidaPerdida(){
         // Paramos el tiempo de la letra y general
         clearTimeout(cronoOn);
         clearTimeout(cronoOnLetra);
-        displayLetra.innerHTML="00:00";
+        resetCronometroLetra();
+        input.disabled = true;
 
 }
 
@@ -341,11 +356,13 @@ function partidaGanada(){
     bResolver.disabled = true;
     document.getElementById("jugar").disabled = false;
     dibujoAhorcado.src = "img/ahorcadoOk.png";
+    input.disabled = true;
+
 
     // Paramos el tiempo de la letra y general
     clearTimeout(cronoOn);
     clearTimeout(cronoOnLetra);
-
+    resetCronometroLetra();
     guardarRecordPalabra();
 
 
@@ -356,11 +373,13 @@ function guardarRecordPalabra(){
 
     let recordPalabraResuelta = localStorage.getItem(arrPalabraClave.join(""));
 
-    console.log(recordPalabraResuelta);
+    // console.log(recordPalabraResuelta);
     
-    if ((recordPalabraResuelta == null) || (segundos < recordPalabraResuelta)){
+    if ((recordPalabraResuelta == null) || ((minutos + segundos) < recordPalabraResuelta)){
 
-        localStorage.setItem(arrPalabraClave.join(""), segundos);
+        localStorage.setItem(arrPalabraClave.join(""), minutos + segundos);
+        recordTitulo.innerHTML = "NUEVO RECORD!";
+        recordText.innerHTML = minutos + ":" + segundos;
     }
 
 
@@ -421,7 +440,13 @@ function guardarRecordPalabra(){
             formatoCronometroLetra();
             cronometroLetra = (minutosLetra + ':' + segundosLetra);
                     
-            displayLetra.innerHTML = cronometroLetra;
+            // displayLetra.innerHTML = cronometroLetra;
+
+            let cuadroProgreso = document.querySelector(".cuadroProgreso:not(.pintao)");
+            
+            cuadroProgreso.classList.add('pintao');
+
+            // console.log(segundosLetra);
 
             if(segundosLetra == 0){
                 clearTimeout(cronoOnLetra);
@@ -433,21 +458,26 @@ function guardarRecordPalabra(){
         function iniciarCronometroLetra(){
 
             // Iniciamos 'tiempo' y ponemos display a 01:00,000
-            tiempoLetra = new Date(0,0,0,0,0,9);
+            tiempoLetra = new Date(0,0,0,0,0,10);
             
-            displayLetra.innerHTML = '00:10';
-            
+            // displayLetra.innerHTML = '00:10';
+
+            resetCronometroLetra();
             cronoOnLetra = setInterval(elCronometroLetra, 1000);
-            
         }
         
         // Método que resetea a valores iniciales 
         function resetCronometroLetra(){
             
             // Iniciamos 'tiempo' y ponemos display a 01:00,000
-            tiempoLetra = new Date(0,0,0,0,0,9);
+            tiempoLetra = new Date(0,0,0,0,0,10);
             
-            displayLetra.innerHTML = '00:10';
+            // displayLetra.innerHTML = '00:10';
+            let losPintaos = document.querySelectorAll(".cuadroProgreso.pintao");
+
+            losPintaos.forEach((e) => {
+                e.classList.remove('pintao');
+            });
             
         }
 
