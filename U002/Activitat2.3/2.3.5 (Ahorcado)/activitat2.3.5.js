@@ -18,9 +18,10 @@ let arrPalabraClave = [];
 // Acumula las letras falladas
 let letraFallada="";
 
-// Guarda el tiempo en formato cronómetro que mostrará en el display.
-let cronometro;
-let cronometroLetra;
+
+// Cronómetros
+let cronometro; // Guarda el tiempo en formato cronómetro que mostrará en el display el tiempo total.
+let cronometroLetra; // Cronómetro para el tiempo por letra
 
 // guarda el setInterval() para pasarle el clearTiemout()
 let cronoOn;
@@ -50,26 +51,22 @@ let minutosLetra;
 let segundosLetra;
 
 // Botones
-let bLetra = document.getElementById("letra");
-let bResolver = document.getElementById("resolver");
+const bResolver = document.getElementById("resolver");
 
 // Listener de los diferentes botones
 document.getElementById("jugar").addEventListener("click", jugar, false);
-bLetra.addEventListener("click", intentoLetra, false);
 bResolver.addEventListener("click", resolver, false);
+
 input.addEventListener("keydown", (e) => {
 
     if(e.key === 'Enter'){
         intentoLetra()
     }
-},
-
-false);
+});
 
 
 
 // Al inicio solo está activo el botón jugar y Salir
-bLetra.disabled = true;
 bResolver.disabled = true;
 dibujoAhorcado.src = "img/LogoRamis.jpg";
 
@@ -83,21 +80,21 @@ function jugar(){
 
     // Habilitamos input por si lo hemos deshabilitado al acabar una partida anterior
     input.disabled = false;
+    input.value = "";
+    input.focus();
 
 
-    // Iniciamos el tiempo de la letra y general
+    // Iniciamos el tiempo de la letra y el tiempo general
     iniciarCronometro();
     iniciarCronometroLetra();
 
     
     
-    // Reseteamos intentos, letras falladas y array de la palabra oculta de posibles partidas anteriores.
+    // Reseteamos intentos, letras falladas, records y array de la palabra oculta de posibles partidas anteriores.
     intentos = 7;
     letraFallada = "Falladas: ";
     arrPalabraOculta = [];
-    letraFalladaDisplay.innerHTML = "";
-    input.value = "";
-    input.focus();
+    letraFalladaDisplay.innerHTML = "";    
     recordTitulo.innerHTML="";
 
     // Muestra el dibujo inicial ahora con todos los intentos
@@ -122,8 +119,7 @@ function jugar(){
     // Imprime plabra oculta (guiones)
     palabraOculta.innerHTML = arrPalabraOculta.join("");
     
-    // Habilita los botones de letra y resolver y deshabilita el botón jugar
-    bLetra.disabled = false;
+    // Habilita el botón esolver y deshabilita el botón jugar
     bResolver.disabled = false;
     document.getElementById("jugar").disabled = true;
 }
@@ -131,7 +127,6 @@ function jugar(){
 
 // Función de intento de letra que compara la letra insertada con la palabra clave
 function intentoLetra (){
-
     
     // Paramos el tiempo de la letra
     clearTimeout(cronoOnLetra);
@@ -141,7 +136,6 @@ function intentoLetra (){
 
     // Pedimos letra al usuario
     let letra = input.value;
-
     
     // Ponemos la letra en mayúscula
     letra = letra.toUpperCase();
@@ -182,7 +176,8 @@ function intentoLetra (){
         dibujo();
     } 
     
-    // 3) No quedan más intentos. Acaba el juego y habilita/deshabilita botones para el inicio de un nuevo juego
+    // En este punto, comprobamos los intentos
+    // 3) No quedan más intentos. Acaba el juego.
     if (intentos == 0){
         partidaPerdida();
         return;
@@ -234,7 +229,7 @@ function resolver(){
         
         if(arrPalabraClave[i] != arrPalabraResolver[i]){
             
-            // Con que haya una única letra diferente, ya ha perdido la partida y se resetan los botones para el inicio de una nueva partida.
+            // Con que haya una única letra diferente, ya ha perdido la partida.
             partidaPerdida();
             dibujoAhorcado.src = "img/ahorcado0.png";
             return;
@@ -242,7 +237,7 @@ function resolver(){
         
     }
 
-    // Si sale del bucle implica que todas las letras son iguales. Ha acertado la palabra. Se resetean botones para el inicio de una nueva partida
+    // Si sale del bucle implica que todas las letras son iguales. Ha acertado la palabra.
     partidaGanada();
 }
 
@@ -317,6 +312,7 @@ function validarResolver(texto){
         
 }
 
+// Función que se ejecuta al acabar el tiempo de la letra. Resta intento e inicializa el cronómetro de la letra
 function finTiempoLetra(){
     
     intentos--;
@@ -333,29 +329,38 @@ function finTiempoLetra(){
 
 }
 
+// Función que determina el final de la partida como perdedor
 function partidaPerdida(){
 
+    // Texto que anuncia el final de la partida como perdedor
+
     document.getElementById("palabraOculta").innerHTML = "<br> EPIC FAIL !!!! <br> <h5> Se han acabado los intentos.<br><br>La palabra era: </h5><h1>" + arrPalabraClave.join("") + "</h1>";
-        bLetra.disabled = true;
         bResolver.disabled = true;
         document.getElementById("jugar").disabled = false;
         dibujo();
 
-        // Paramos el tiempo de la letra y general
+        // Paramos el tiempo de la letra y el general
         clearTimeout(cronoOn);
         clearTimeout(cronoOnLetra);
         resetCronometroLetra();
+
+        // Impedimos que se pueda introducir nada en el input.
         input.disabled = true;
 
 }
 
+// Función que determina el final de la partida como ganador
 function partidaGanada(){
+
+    // Texto que anuncia el final de la partida como ganador
+
     palabraOculta.innerHTML = "<br> ¡¡¡¡ ENHORABUENA !!!! <br> <h5> HAS ACERTADO LA PALABRA <br><br></h5><h1>" + arrPalabraClave.join("") + "</h1>";
    
-    bLetra.disabled = true;
     bResolver.disabled = true;
     document.getElementById("jugar").disabled = false;
     dibujoAhorcado.src = "img/ahorcadoOk.png";
+
+    // Impedimos que se pueda introducir nada en el input.
     input.disabled = true;
 
 
@@ -363,18 +368,18 @@ function partidaGanada(){
     clearTimeout(cronoOn);
     clearTimeout(cronoOnLetra);
     resetCronometroLetra();
+
+    // Verificamos si ha hecho un récord.
     guardarRecordPalabra();
-
-
 
 }
 
+
+// Función que comprueba si hay un récord en la palabra resuleta y lo muestra por pantalla si lo es.
 function guardarRecordPalabra(){
 
     let recordPalabraResuelta = localStorage.getItem(arrPalabraClave.join(""));
 
-    // console.log(recordPalabraResuelta);
-    
     if ((recordPalabraResuelta == null) || ((minutos + segundos) < recordPalabraResuelta)){
 
         localStorage.setItem(arrPalabraClave.join(""), minutos + segundos);
@@ -385,15 +390,11 @@ function guardarRecordPalabra(){
 
 }
 
-
-
-
 // CRONOMETROS
-
     // GENERAL
         function elCronometro(){
 
-            // Variables que guarda cada valor temporal de 'tiempo'
+        // Variables que guarda cada valor temporal de 'tiempo'
             minutos = tiempo.getMinutes();
             segundos = tiempo.getSeconds();
                 
@@ -429,6 +430,7 @@ function guardarRecordPalabra(){
         }
 
     // LETRA
+        // Método que inicia el cronómetro de la letra restandole un segundo cada vez que se ejecuta.
         function elCronometroLetra(){
 
             // Variables que guarda cada valor temporal de 'tiempo'
@@ -439,14 +441,16 @@ function guardarRecordPalabra(){
                     
             formatoCronometroLetra();
             cronometroLetra = (minutosLetra + ':' + segundosLetra);
-                    
-            // displayLetra.innerHTML = cronometroLetra;
 
-            let cuadroProgreso = document.querySelector(".cuadroProgreso:not(.pintao)");
-            
-            cuadroProgreso.classList.add('pintao');
+            // Pinta cada <div> añadiendo la clase 'pintao'
 
-            // console.log(segundosLetra);
+            if(document.querySelector(".cuadroProgreso:not(.pintao)") != null){
+                
+                let cuadroProgreso = document.querySelector(".cuadroProgreso:not(.pintao)");
+                
+                cuadroProgreso.classList.add('pintao');
+                
+            }
 
             if(segundosLetra == 0){
                 clearTimeout(cronoOnLetra);
@@ -454,13 +458,8 @@ function guardarRecordPalabra(){
             }
         }
 
-
+        // Resetea el cronómetro de la letra en 10 segundos y la barra de progreso y vuelve a ejecutar el cronómetro de la letra 
         function iniciarCronometroLetra(){
-
-            // Iniciamos 'tiempo' y ponemos display a 01:00,000
-            tiempoLetra = new Date(0,0,0,0,0,10);
-            
-            // displayLetra.innerHTML = '00:10';
 
             resetCronometroLetra();
             cronoOnLetra = setInterval(elCronometroLetra, 1000);
@@ -471,8 +470,9 @@ function guardarRecordPalabra(){
             
             // Iniciamos 'tiempo' y ponemos display a 01:00,000
             tiempoLetra = new Date(0,0,0,0,0,10);
+
+            // 'Borra' la barra de progreso quitando la clase 'pintao' de todos los <div> 
             
-            // displayLetra.innerHTML = '00:10';
             let losPintaos = document.querySelectorAll(".cuadroProgreso.pintao");
 
             losPintaos.forEach((e) => {
